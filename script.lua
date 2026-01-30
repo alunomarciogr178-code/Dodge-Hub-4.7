@@ -4,6 +4,7 @@ local TS = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
 local Lighting = game:GetService("Lighting")
 local UIS = game:GetService("UserInputService")
+local VirtualUserService = game:GetService("VirtualUserService")
 
 local player = Players.LocalPlayer
 local Data = player:WaitForChild("Data")
@@ -39,7 +40,7 @@ for _, v in pairs(Lighting:GetChildren()) do
 end
 
 pcall(function()
-    fireRemote("SetTeam", "Marines")
+    fireRemote("SetTeam", "Pirates")
 end)
 
 local function detectAdmin(p)
@@ -93,6 +94,17 @@ task.spawn(function()
                 humanoid:Destroy()
                 Instance.new("Humanoid", character)
             end
+        end)
+    end
+end)
+
+-- Auto-attack loop
+task.spawn(function()
+    while true do
+        task.wait(0.2)
+        pcall(function()
+            VirtualUserService:CaptureController()
+            VirtualUserService:ClickButton1(Vector2.new())
         end)
     end
 end)
@@ -210,14 +222,14 @@ local function getQuestInfo()
             NameMon = "Toga Warrior"
             CFrameQuest = CFrame.new(-1581, 7, -2982) 
             CFrameMon = CFrame.new(-1820, 51, -2741)
-        elseif MyLevel <= 299 then 
+            elseif MyLevel <= 299 then 
             Mon = "Gladiator" 
             LevelQuest = 2 
             NameQuest = "ColosseumQuest" 
             NameMon = "Gladiator"
             CFrameQuest = CFrame.new(-1581, 7, -2982) 
             CFrameMon = CFrame.new(-1268, 30, -2996)
-            elseif MyLevel <= 324 then 
+        elseif MyLevel <= 324 then 
             Mon = "Military Soldier" 
             LevelQuest = 1 
             NameQuest = "MagmaQuest" 
@@ -829,7 +841,7 @@ task.spawn(function()
 
             for _, enemy in pairs(workspace.Enemies:GetChildren()) do
                 if enemy.Name == NM and enemy:FindFirstChild("Humanoid") and enemy.Humanoid.Health > 0 then
-                    enemy.HumanoidRootPart.CFrame = rootPart.CFrame * CFrame.new(0, -25, math.random(-4,4))
+                    enemy.HumanoidRootPart.CFrame = rootPart.CFrame * CFrame.new(0, -10, math.random(-4,4))
                     enemy.HumanoidRootPart.CanCollide = false
                     enemy.Humanoid.WalkSpeed = 0
                 end
@@ -857,7 +869,7 @@ task.spawn(function()
 end)
 
 local sg = Instance.new("ScreenGui")
-sg.Name = "KaitunUI"
+sg.Name = "DodgeHubUI"
 sg.ResetOnSpawn = false
 sg.Parent = player:WaitForChild("PlayerGui")
 
@@ -872,7 +884,7 @@ frame.Parent = sg
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 40)
 title.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
-title.Text = "Kaitun Auto"
+title.Text = "Dodge Hub"
 title.TextColor3 = Color3.new(1,1,1)
 title.Font = Enum.Font.GothamBlack
 title.TextSize = 24
